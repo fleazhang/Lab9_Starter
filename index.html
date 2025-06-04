@@ -5,6 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "0d2ffe1afae14c8c936436bb1b896875"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
   <title>Lab 9</title>
 
   <style>
@@ -87,7 +94,7 @@
     </section>
   </main>
 
-  <script>
+  <script type="module">
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -99,9 +106,141 @@
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-
+    let count = 0;
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns[0].addEventListener("click", () => {
+      console.log("Console Log Demo");
+    });
+
+    errorBtns[1].addEventListener("click", () => {
+      console.error("Console Error Demo");
+    });
+    
+    errorBtns[2].addEventListener("click", () => {
+      console.count("Count Button ");
+    });
+
+    errorBtns[3].addEventListener("click", () => {
+      console.warn("Console warn button")
+    });
+
+    errorBtns[4].addEventListener("click", () => {
+      let number = 2
+      let errorMssg = "The number is not equal to 3";
+      console.assert(2==3, "%o", { number, errorMssg });
+    });
+
+    errorBtns[5].addEventListener("click", () => {
+      console.clear();
+    });
+
+    errorBtns[6].addEventListener("click", () => {
+      let button = document.createElement("button");
+      button.innerText = "Your mom was here!";
+      console.dir(button);
+    })
+
+    errorBtns[7].addEventListener("click", () => {
+      let button = document.createElement("button");
+      button.innerText = "Your mom was here!";
+      console.dirxml(button);
+    });
+
+    errorBtns[8].addEventListener("click", () => {
+      console.group();
+    });
+
+    errorBtns[9].addEventListener("click", () => {
+      console.groupEnd();
+    });
+
+    errorBtns[10].addEventListener("click", () => {
+      const class1 = {name: "Software Engineering", num: 110};
+      const class2 = {name: "Programming Languages and Paradigms", num: 130};
+      const class3 = {name: "Advanced Software Engineering", num: 112};
+
+      console.table([class1, class2, class3]);
+    })
+
+    errorBtns[11].addEventListener("click", () => {
+      console.time("Timer Button");
+    });
+
+    errorBtns[12].addEventListener("click", () => {
+      console.timeEnd("Timer Button");
+    });
+
+    errorBtns[13].addEventListener("click", function handleBtnClick() {
+      function deepest() {
+        console.trace();
+      }
+      function deeper() {
+        deepest();
+      }
+      function deep() {
+        deeper();
+      }
+      deep();
+    });
+
+    errorBtns[14].addEventListener("click", () => {
+        triggerGlobalError();
+    });
+
+    //network request
+    async function netRequest() {
+      try {
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon/umbreon');
+      const data = response.json();
+      }catch(error) {
+        console.error("There was a problem fetching the data: ", error);
+        throw error;
+      }finally {
+      console.log("did not load");
+      }      
+    }
+
+
+    //DOM tree element search (error)
+    try {
+      document.querySelector('#error-button').addEventListener("click", () => {
+        alert('button clicked!')
+      });
+    }catch(error) {
+      console.error("There was a problem accessing the error button: ", error);
+    }
+
+    // class Error {
+    //   constructor(message) {
+    //     this.message = message
+    //     this.name = "Error";
+    //   }
+    // }
+
+    class customError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "Validation Error";
+      }
+    }
+
+    function test1() {
+      throw new customError("oh no");
+    }
+
+    try {
+      test1();
+    }catch (error) {
+      alert(error.message);
+      alert(error.name);
+    }
+
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log("Global error");
+      console.log("Error message: ", message);
+    }
+
   </script>
 </body>
 
